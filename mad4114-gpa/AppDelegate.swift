@@ -82,6 +82,55 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // init Student Store
         StudentStore.initData()
         
+        let context = persistentContainer.viewContext
+        
+        // init Course Entity
+        let courseCount = try! context.count(for: NSFetchRequest<NSManagedObject>(entityName: "CourseEntity"))
+        if courseCount == 0 {
+            for course in StudentStore.cources.values {
+                let entity = CourseEntity(context: context)
+                entity.code = course.code
+                entity.name = course.name
+                entity.term = Int32(course.term)
+                entity.credit = Int32(course.credit)
+                saveContext()
+            }
+        }
+        
+        // drop student Entity
+//        let dropStudents = try! context.fetch(NSFetchRequest<StudentEntity>(entityName: "StudentEntity"))
+//        if dropStudents.count > 0 {
+//            for dropStudent in dropStudents {
+//                context.delete(dropStudent)
+//            }
+//        }
+        
+        // init Student Entity
+        let students = try! context.count(for: NSFetchRequest<NSManagedObject>(entityName: "StudentEntity"))
+        if students == 0 {
+            let tempCourses = try! context.fetch(NSFetchRequest<CourseEntity>(entityName: "CourseEntity"))
+            var courseDic: [String: CourseEntity] = [:]
+            for tempCourse in tempCourses {
+                courseDic[tempCourse.code!] = tempCourse
+            }
+            
+            for student in StudentStore.students {
+                let entity = StudentEntity(context: context)
+                entity.name = student.name
+                entity.gpa = student.gpa
+                
+                for grade in student.grades {
+                    let gEntity = GradeEntity(context: context)
+                    gEntity.gradePoint = grade.gradePoint
+                    gEntity.weightedGradePoint = grade.weightedGradePoint
+                    gEntity.course = courseDic[grade.cource.code]
+                    entity.addToGrade(gEntity)
+                }
+                
+                saveContext()
+            }
+        }
+        
         return true
     }
 

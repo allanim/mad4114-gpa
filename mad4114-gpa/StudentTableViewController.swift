@@ -7,10 +7,19 @@
 //
 
 import UIKit
+import CoreData
 
 class StudentTableViewController: UITableViewController {
 
-    var data : [Student] = []
+    var dataArray: [StudentEntity] {
+        return self.fetch()
+    }
+    
+    func fetch() -> [StudentEntity] {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        return try! context.fetch(NSFetchRequest<StudentEntity>(entityName: "StudentEntity"))
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,11 +30,11 @@ class StudentTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        data = StudentStore.students;
     }
 
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -33,17 +42,16 @@ class StudentTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return data.count
+        return dataArray.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "studentCell", for: indexPath) as? StudentTableViewCell {
             
-            let student = data[indexPath.row]
-            
-            cell.lbName.text = student.name
-            cell.lbGrade.text = String(student.gpa)
+            let record = self.dataArray[indexPath.row]
+            cell.lbName.text = record.name
+            cell.lbGrade.text = String(record.gpa)
             
             return cell
         } else {
