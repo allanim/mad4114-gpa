@@ -20,6 +20,9 @@
 		9D791DCD21B9EB1D008270D9 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D791DCC21B9EB1D008270D9 /* star.png */; };
 		9D791DD121B9ED14008270D9 /* StudentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D791DD021B9ED14008270D9 /* StudentTableViewController.swift */; };
 		9D791DD321B9EEA1008270D9 /* StudentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D791DD221B9EEA1008270D9 /* StudentTableViewCell.swift */; };
+		9D791DD521BA34A7008270D9 /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D791DD421BA34A7008270D9 /* DetailTableViewCell.swift */; };
+		9D791DD721BA35D7008270D9 /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D791DD621BA35D7008270D9 /* DetailTableViewController.swift */; };
+		9D791DD921BB1912008270D9 /* NameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D791DD821BB1912008270D9 /* NameTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +41,9 @@
 		9D791DCC21B9EB1D008270D9 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
 		9D791DD021B9ED14008270D9 /* StudentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentTableViewController.swift; sourceTree = "<group>"; };
 		9D791DD221B9EEA1008270D9 /* StudentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentTableViewCell.swift; sourceTree = "<group>"; };
+		9D791DD421BA34A7008270D9 /* DetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
+		9D791DD621BA35D7008270D9 /* DetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
+		9D791DD821BB1912008270D9 /* NameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +87,9 @@
 				9D791DB421B9E9CA008270D9 /* mad4114_gpa.xcdatamodeld */,
 				9D791DD021B9ED14008270D9 /* StudentTableViewController.swift */,
 				9D791DD221B9EEA1008270D9 /* StudentTableViewCell.swift */,
+				9D791DD421BA34A7008270D9 /* DetailTableViewCell.swift */,
+				9D791DD621BA35D7008270D9 /* DetailTableViewController.swift */,
+				9D791DD821BB1912008270D9 /* NameTableViewCell.swift */,
 			);
 			path = "mad4114-gpa";
 			sourceTree = "<group>";
@@ -177,13 +186,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D791DB621B9E9CA008270D9 /* mad4114_gpa.xcdatamodeld in Sources */,
+				9D791DD721BA35D7008270D9 /* DetailTableViewController.swift in Sources */,
 				9D791DCA21B9EAB0008270D9 /* StudentStore.swift in Sources */,
 				9D791DD121B9ED14008270D9 /* StudentTableViewController.swift in Sources */,
 				9D791DB021B9E9CA008270D9 /* ViewController.swift in Sources */,
 				9D791DC621B9EA50008270D9 /* Course.swift in Sources */,
+				9D791DD921BB1912008270D9 /* NameTableViewCell.swift in Sources */,
 				9D791DD321B9EEA1008270D9 /* StudentTableViewCell.swift in Sources */,
 				9D791DAE21B9E9CA008270D9 /* AppDelegate.swift in Sources */,
 				9D791DC421B9EA31008270D9 /* Student.swift in Sources */,
+				9D791DD521BA34A7008270D9 /* DetailTableViewCell.swift in Sources */,
 				9D791DC821B9EA77008270D9 /* Grade.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

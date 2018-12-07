@@ -58,14 +58,68 @@ struct Grade {
 
 enum Mark: String {
     case AP = "A+"
-    case A = "A"
+    case A = "A "
     case AM = "A-"
     case BP = "B+"
-    case B = "B"
+    case B = "B "
     case BM = "B-"
     case CP = "C+"
-    case C = "C"
+    case C = "C "
     case CM = "C-"
-    case D = "D"
-    case F = "F"
+    case D = "D "
+    case F = "F "
+    
+    func getPoint() -> Double {
+        switch self {
+        case .AP:
+            return 4.0
+        case .A:
+            return 3.7
+        case .AM:
+            return 3.5
+        case .BP:
+            return 3.2
+        case .B:
+            return 3.0
+        case .BM:
+            return 2.7
+        case .CP:
+            return 2.3
+        case .C:
+            return 2.0
+        case .CM:
+            return 1.7
+        case .D:
+            return 1.0
+        default:
+            return 0.0
+        }
+    }
+    
+    static func getType(point: Double) -> Mark {
+        switch point {
+        case 4.0:
+            return .AP
+        case 3.7:
+            return .A
+        case 3.5:
+            return .AM
+        case 3.2:
+            return .BP
+        case 3.0:
+            return .B
+        case 2.7:
+            return .BM
+        case 2.3:
+            return .CP
+        case 2.0:
+            return .C
+        case 1.7:
+            return .CM
+        case 1.0:
+            return .D
+        default:
+            return .F
+        }
+    }
 }

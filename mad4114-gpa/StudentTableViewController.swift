@@ -15,10 +15,12 @@ class StudentTableViewController: UITableViewController {
         return self.fetch()
     }
     
+    var selectedStudent: StudentEntity?
+    
     func fetch() -> [StudentEntity] {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
-        return try! context.fetch(NSFetchRequest<StudentEntity>(entityName: "StudentEntity"))
+        return try! context.fetch(StudentEntity.fetchRequest())
     }
     
     override func viewDidLoad() {
@@ -30,6 +32,10 @@ class StudentTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tableView.reloadData()
     }
 
     
@@ -94,15 +100,22 @@ class StudentTableViewController: UITableViewController {
         return true
     }
     */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.selectedStudent = self.dataArray[indexPath.row]
+        self.performSegue(withIdentifier: "details", sender: indexPath.row)
+    }
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if let dest = segue.destination as? DetailTableViewController {
+            if let selected = self.selectedStudent {
+                dest.student = selected
+            }
+        }
     }
-    */
+ 
 
 }

@@ -11,6 +11,7 @@ import Foundation
 struct StudentStore {
     static var students: [Student] = []
     static var cources: [Int: Course] = [:]
+    static var markList: [Mark] = []
     
     static func initData() {
         initCources()
@@ -19,6 +20,7 @@ struct StudentStore {
         initStudent3()
         initStudent4()
         initStudent5()
+        initMarkList()
     }
     
     static func addStudent(student: Student) {
@@ -118,5 +120,32 @@ struct StudentStore {
         student.addGrade(grade: Grade(cource: self.cources[25]!, grade: Mark.CM))
         student.addGrade(grade: Grade(cource: self.cources[26]!, grade: Mark.C))
         self.students.append(student)
+    }
+    
+    static func initMarkList() {
+        self.markList.append(Mark.AP)
+        self.markList.append(Mark.A)
+        self.markList.append(Mark.AM)
+        self.markList.append(Mark.BP)
+        self.markList.append(Mark.B)
+        self.markList.append(Mark.BM)
+        self.markList.append(Mark.CP)
+        self.markList.append(Mark.C)
+        self.markList.append(Mark.CM)
+        self.markList.append(Mark.D)
+        self.markList.append(Mark.F)
+    }
+    
+    static func rowMarkList(_ check: String) -> Int {
+        var result: Int = 0
+        for mark in markList {
+            if !mark.rawValue.elementsEqual(check) {
+                result = result + 1
+            } else {
+                break
+            }
+        }
+        
+        return result
     }
 }

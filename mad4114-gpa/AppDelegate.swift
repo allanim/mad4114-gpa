@@ -85,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let context = persistentContainer.viewContext
         
         // init Course Entity
-        let courseCount = try! context.count(for: NSFetchRequest<NSManagedObject>(entityName: "CourseEntity"))
+        let courseCount = try! context.count(for: CourseEntity.fetchRequest())
         if courseCount == 0 {
             for course in StudentStore.cources.values {
                 let entity = CourseEntity(context: context)
@@ -98,7 +98,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         // drop student Entity
-//        let dropStudents = try! context.fetch(NSFetchRequest<StudentEntity>(entityName: "StudentEntity"))
+//        let dropStudents = try! context.fetch(StudentEntity.fetchRequest())
 //        if dropStudents.count > 0 {
 //            for dropStudent in dropStudents {
 //                context.delete(dropStudent)
@@ -106,9 +106,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         
         // init Student Entity
-        let students = try! context.count(for: NSFetchRequest<NSManagedObject>(entityName: "StudentEntity"))
+        let students = try! context.count(for: StudentEntity.fetchRequest())
         if students == 0 {
-            let tempCourses = try! context.fetch(NSFetchRequest<CourseEntity>(entityName: "CourseEntity"))
+            let tempCourses: [CourseEntity] = try! context.fetch(CourseEntity.fetchRequest())
             var courseDic: [String: CourseEntity] = [:]
             for tempCourse in tempCourses {
                 courseDic[tempCourse.code!] = tempCourse
