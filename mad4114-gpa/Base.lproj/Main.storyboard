@@ -63,7 +63,7 @@
             </objects>
             <point key="canvasLocation" x="992.79999999999995" y="27.436281859070466"/>
         </scene>
-        <!--Courses-->
+        <!--Details-->
         <scene sceneID="ykN-63-tWc">
             <objects>
                 <tableViewController id="l4d-MA-pgC" customClass="DetailTableViewController" customModule="mad4114_gpa" customModuleProvider="target" sceneMemberID="viewController">
@@ -126,7 +126,7 @@
                             <outlet property="delegate" destination="l4d-MA-pgC" id="RHF-ea-u8h"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Courses" id="XD3-Nu-Niz">
+                    <navigationItem key="navigationItem" title="Details" id="XD3-Nu-Niz">
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="prg-lQ-dS9">
                             <connections>
                                 <action selector="btnSave:" destination="l4d-MA-pgC" id="B9k-cm-SVe"/>
