@@ -19,6 +19,18 @@ class DetailTableViewController: UITableViewController {
     var student: StudentEntity!
     var editGrade: [String:GradeEntity]!
     
+    var gradeByTerm: [Int:[GradeEntity]] {
+        var result: [Int:[GradeEntity]] = [:]
+        result[1] = editGrade.values.filter({ (grade) -> Bool in
+            grade.course!.term == Int32(1)
+        })
+        result[2] = editGrade.values.filter({ (grade) -> Bool in
+            grade.course!.term == Int32(2)
+        })
+        
+        return result
+    }
+    
     var courses: [CourseEntity] {
         return self.fetch().sorted{$0.code! < $1.code!}.sorted(by: {$0.term < $1.term})
     }
@@ -38,12 +50,11 @@ class DetailTableViewController: UITableViewController {
         return result
     }
     
+    var termPoint: [Int:Double] = [:]
+    
     @IBAction func btnSave(_ sender: Any) {
+        reloadAll()
         
-        for grade in editGrade.values {
-            print(String(grade.gradePoint) +  " : " + (grade.course?.name)!)
-            print(student.name as Any)
-        }
         do {
             try context.save()
             print("SAVED")
@@ -55,6 +66,40 @@ class DetailTableViewController: UITableViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    func calcGpa(grades: [GradeEntity]) -> (totalCredit: Int32, totalWeightedGradePoint: Double, gpa: Double) {
+        var totalCredit: Int32 = 0
+        var totalWeightedGradePoint: Double = 0.0
+        for grade in grades {
+            totalCredit += grade.course?.credit ?? 0
+            totalWeightedGradePoint += grade.weightedGradePoint
+        }
+        let gpa = (totalWeightedGradePoint / Double(totalCredit) * 1000).rounded() / 1000
+        return (totalCredit, totalWeightedGradePoint, gpa)
+    }
+    
+    func reloadTerm(term: Int) {
+        let gpa = calcGpa(grades: gradeByTerm[term]!)
+        self.termPoint[term] = gpa.gpa
+    }
+    
+    func reloadTotal() {
+        var totalGrades: [GradeEntity] = []
+        for grade in editGrade.values {
+            totalGrades.append(grade)
+        }
+        let gpa = calcGpa(grades: totalGrades)
+        
+        student.totalCredit = gpa.totalCredit
+        student.totalWeightGradePoint = gpa.totalWeightedGradePoint
+        student.gpa = gpa.gpa
+    }
+    
+    func reloadAll() {
+        reloadTerm(term: 1)
+        reloadTerm(term: 2)
+        reloadTotal()
+        self.tableView.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,8 +110,9 @@ class DetailTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
+        // edit student
         if let student = self.student {
-            editGrade = [:]
+            self.editGrade = [:]
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let context = appDelegate.persistentContainer.viewContext
             let fetchRequest: NSFetchRequest<GradeEntity> = GradeEntity.fetchRequest();
@@ -74,11 +120,29 @@ class DetailTableViewController: UITableViewController {
             let grades: [GradeEntity] = try! context.fetch(fetchRequest)
             for grade in grades {
                 if let code = grade.course?.code {
-                    editGrade[code] = grade
+                    self.editGrade[code] = grade
+                }
+            }
+        }
+        // new student
+        else {
+            self.student = StudentEntity(context: context)
+            self.editGrade = [:]
+            for course in self.courses {
+                if let code = course.code {
+                    let grade = GradeEntity(context: context);
+                    grade.course = course
+                    grade.gradePoint = 0
+                    grade.student = student
+                    self.editGrade[code] = grade
                 }
             }
         }
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        reloadAll()
     }
 
     // MARK: - Table view data source
@@ -105,7 +169,15 @@ class DetailTableViewController: UITableViewController {
         if section == 0 {
             return "Name"
         } else {
-            return "TERM " + String(section)
+            return "TERM" + String(section) + " GPA: " + String(termPoint[section]!)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == tableView.numberOfSections - 1 {
+            return "TOTAL GPA: " + String(student.gpa)
+        } else {
+            return nil
         }
     }
     
@@ -126,6 +198,13 @@ class DetailTableViewController: UITableViewController {
                     if let grade = self.editGrade[record.code!] {
                         cell.editGrade = grade
                         cell.lbValue.text = Mark.getType(point: grade.gradePoint).rawValue
+                    }
+                    
+                    cell.reload = { value in
+                        if value {
+                            print("Reload")
+                            self.reloadAll()
+                        }
                     }
                 }
                 

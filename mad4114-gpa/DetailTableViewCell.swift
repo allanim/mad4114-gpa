@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailTableViewCell: UITableViewCell {
+class DetailTableViewCell: UITableViewCell, UITextFieldDelegate {
 
     @IBOutlet weak var lbKey: UILabel!
     @IBOutlet weak var lbValue: UITextField!
@@ -17,9 +17,13 @@ class DetailTableViewCell: UITableViewCell {
     
     var markPicker = UIPickerView()
     
+    var reload: ((_ value: Bool)->())?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        lbValue.delegate = self
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -27,6 +31,10 @@ class DetailTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
         pickUpMark(lbValue)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        reload?(true) // Use callback to return data
     }
     
     func pickUpMark(_ textField : UITextField){
@@ -61,6 +69,7 @@ class DetailTableViewCell: UITableViewCell {
     @objc private func pickerDoneClick() {
         let mark = StudentStore.markList[markPicker.selectedRow(inComponent: 0)]
         editGrade.gradePoint = mark.getPoint()
+        editGrade.weightedGradePoint = Double((editGrade.course?.credit)!) * mark.getPoint()
         lbValue.text = mark.rawValue
         lbValue.resignFirstResponder()
     }

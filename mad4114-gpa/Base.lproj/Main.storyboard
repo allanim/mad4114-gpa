@@ -49,7 +49,11 @@
                         </prototypes>
                     </tableView>
                     <navigationItem key="navigationItem" title="Students GPA" id="XLI-Hd-EBP">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="eiq-DP-qNa"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="eiq-DP-qNa">
+                            <connections>
+                                <action selector="btnAdd:" destination="BYZ-38-t0r" id="haQ-ia-oXw"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <segue destination="l4d-MA-pgC" kind="show" identifier="details" id="b4Q-ui-At6"/>
